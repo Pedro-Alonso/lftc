@@ -1,3 +1,9 @@
+import { Screen } from "@/components/screen";
+
 export default function Home() {
-  return <h1>Bem-vindo!</h1>;
+  return (
+    <Screen>
+      <h1>Bem-vindo!</h1>
+    </Screen>
+  );
 }
