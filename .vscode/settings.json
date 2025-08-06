@@ -1,0 +1,11 @@
+{
+  "editor.formatOnSave": true,
+  "eslint.codeActionsOnSave.mode": "all",
+  "prettier.tabWidth": 2,
+  "editor.tabSize": 2,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always",
+    "source.organizeImports": "always",
+    "source.sortImports": "always"
+  }
+}
