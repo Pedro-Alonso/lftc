@@ -1,9 +1,45 @@
+"use client";
+
+import { Input, InputTypes } from "@/components/input";
 import { Screen } from "@/components/screen";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [regex, setRegex] = useState("^$");
+  const [text, setText] = useState("");
+  const [isTextValid, setIsTextValid] = useState(true);
+  const [isRegexValid, setIsRegexValid] = useState(true);
+  const handleRegexChange = (regex: string) => setRegex(regex);
+  const handleTextChange = (text: string) => setText(text);
+  useEffect(() => {
+    try {
+      const pattern = new RegExp(regex);
+      setIsTextValid(pattern.test(text));
+      setIsRegexValid(true);
+    } catch {
+      setIsRegexValid(false);
+    }
+  }, [regex, text]);
   return (
     <Screen>
-      <h1>Bem-vindo!</h1>
+      <div>
+        <div className="flex gap-4">
+          <Input
+            label="Regex"
+            type={InputTypes.Text}
+            onChange={handleRegexChange}
+            value={regex}
+            className={isRegexValid ? "bg-green-400" : "bg-red-400"}
+          />
+          <Input
+            label="Sentença para validar"
+            type={InputTypes.Text}
+            onChange={handleTextChange}
+            value={text}
+            className={isTextValid ? "bg-green-400" : "bg-red-400"}
+          />
+        </div>
+      </div>
     </Screen>
   );
 }
