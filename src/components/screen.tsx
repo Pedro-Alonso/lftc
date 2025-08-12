@@ -6,7 +6,7 @@ interface Props {
 
 export const Screen = ({ children }: Props) => {
   return (
-    <div className="flex flex-col justify-center items-center p-2">
+    <div className="flex flex-col justify-center items-center p-5">
       {children}
     </div>
   );

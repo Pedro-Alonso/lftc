@@ -1,44 +1,16 @@
 "use client";
 
-import { Input, InputTypes } from "@/components/input";
+import { Link } from "@/components/link";
 import { Screen } from "@/components/screen";
-import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [regex, setRegex] = useState("^$");
-  const [text, setText] = useState("");
-  const [isTextValid, setIsTextValid] = useState(true);
-  const [isRegexValid, setIsRegexValid] = useState(true);
-  const handleRegexChange = (regex: string) => setRegex(regex);
-  const handleTextChange = (text: string) => setText(text);
-  useEffect(() => {
-    try {
-      const pattern = new RegExp(regex);
-      setIsTextValid(pattern.test(text));
-      setIsRegexValid(true);
-    } catch {
-      setIsRegexValid(false);
-    }
-  }, [regex, text]);
   return (
     <Screen>
-      <div>
-        <div className="flex gap-4">
-          <Input
-            label="Regex"
-            type={InputTypes.Text}
-            onChange={handleRegexChange}
-            value={regex}
-            className={isRegexValid ? "bg-green-400" : "bg-red-400"}
-          />
-          <Input
-            label="Sentença para validar"
-            type={InputTypes.Text}
-            onChange={handleTextChange}
-            value={text}
-            className={isTextValid ? "bg-green-400" : "bg-red-400"}
-          />
-        </div>
+      <h1 className="font-bold text-2xl text-center">
+        Selecione a funcionalidade que deseja acessar:
+      </h1>
+      <div className="flex flex-col mt-4 gap-2 p-3 w-fill items-center justify-center border rounded-lg border-gray-300">
+        <Link href="/regex" text="Simulador de Regex" />
       </div>
     </Screen>
   );
