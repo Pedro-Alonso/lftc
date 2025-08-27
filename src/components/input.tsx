@@ -7,7 +7,7 @@ export enum InputTypes {
 
 interface InputProps<T extends string> {
   type: InputTypes;
-  label: string;
+  label?: string;
   value: T;
   className?: string;
   onChange: (value: T) => void;
