@@ -16,6 +16,7 @@ interface GrammarState {
 }
 
 const GrammarPage = () => {
+  const [isRulesVisible, setIsRulesVisible] = useState(true);
   const [text, setText] = useState("");
   const [isTextValid, setIsTextValid] = useState(true);
   const [grammarStates, setGrammarStates] = useState<GrammarState[]>([
@@ -232,6 +233,26 @@ const GrammarPage = () => {
         className="mt-4 !w-60 bg-red-400 hover:bg-red-600"
         text="Limpar Gramática"
       />
+      <Button
+        onClick={() => setIsRulesVisible((prev) => !prev)}
+        className="mt-4 !w-60 bg-blue-400 hover:bg-blue-600"
+        text={isRulesVisible ? "Esconder Regras" : "Mostrar Regras"}
+      />
+      {isRulesVisible && (
+        <div className="mt-4 p-4 border-2 rounded-md bg-gray-100 w-full max-w-md">
+          <h3 className="font-bold mb-2">Regras para a Gramática:</h3>
+          <ul className="list-disc list-inside">
+            <li>Símbolos não-terminais devem ser letras maiúsculas (A-Z).</li>
+            <li>
+              Símbolos terminais devem ser letras minúsculas (a-z), números
+              (0-9) ou espaços.
+            </li>
+            <li>Produções podem ser vazias.</li>
+            <li>Exemplo de produção válida: S → aA</li>
+            <li>Exemplo de produção inválida: S → a1B (contém número)</li>
+          </ul>
+        </div>
+      )}
     </Screen>
   );
 };
