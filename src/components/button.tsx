@@ -15,7 +15,7 @@ export const Button = ({
     <div
       className={`bg-blue-200 w-40 text-center rounded-md font-bold hover:bg-blue-400 cursor-pointer ${className}`}
     >
-      <button onClick={onClick}>
+      <button onClick={onClick} className="cursor-pointer">
         {text}
         {children}
       </button>
