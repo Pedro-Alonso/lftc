@@ -13,7 +13,7 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <div
-      className={`bg-blue-200 w-40 text-center rounded-md font-bold hover:bg-blue-400 cursor-pointer ${className}`}
+      className={`bg-blue-200 w-40 text-center rounded-md font-bold hover:bg-blue-400 cursor-pointer flex justify-center ${className}`}
     >
       <button onClick={onClick} className="cursor-pointer">
         {text}
