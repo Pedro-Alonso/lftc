@@ -18,7 +18,6 @@ export const AutomatonLayout = ({
   onAddState,
   onSelectState,
   onDeleteState,
-  onAddConnection,
   onSetInitial,
   onToggleFinal,
   onChangeMode,
