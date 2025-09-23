@@ -17,7 +17,6 @@ export const useGrammar = (): IGrammarProps => {
 
   const onValidateText = useCallback(
     (text: string) => {
-      // Não-terminal: gramática[]
       const grammarMap: Record<string, string[]> = {};
       for (const g of grammarStates) {
         if (g.symbol && g.isSymbolValid && g.isValid) {
@@ -26,12 +25,10 @@ export const useGrammar = (): IGrammarProps => {
         }
       }
 
-      // Derivação à direita
       function derive(symbol: string, input: string): boolean {
         if (!grammarMap[symbol]) return false;
         for (const production of grammarMap[symbol]) {
           if (production.length === 0) {
-            // Epsilon
             if (input.length === 0) return true;
           } else if (production.length === 1) {
             // Terminal unitário ou não-terminal unitário
@@ -43,15 +40,12 @@ export const useGrammar = (): IGrammarProps => {
               return true;
             }
           } else {
-            // Produção com mais de um símbolo
             const terminal = production[0];
             const nextSymbol = production.slice(1);
             if (input[0] === terminal) {
               if (nextSymbol.match(/^[A-Z]$/)) {
-                // Próximo é um não-terminal (e.g., 'A')
                 if (derive(nextSymbol, input.slice(1))) return true;
               } else {
-                // Próximo é um terminal não-unitário (e.g., 'ab')
                 if (
                   input.slice(1).startsWith(nextSymbol) &&
                   input.length === 1 + nextSymbol.length
