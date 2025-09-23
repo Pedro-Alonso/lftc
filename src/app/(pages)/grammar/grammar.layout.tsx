@@ -90,14 +90,41 @@ export const GrammarLayout = ({
         <div className="mt-4 p-4 border-2 rounded-md bg-gray-100 w-full max-w-md">
           <h3 className="font-bold mb-2">Regras para a Gramática:</h3>
           <ul className="list-disc list-inside">
-            <li>Símbolos não-terminais devem ser letras maiúsculas (A-Z).</li>
             <li>
-              Símbolos terminais devem ser letras minúsculas (a-z), números
-              (0-9) ou espaços.
+              Não terminal unitário: Cada símbolo não terminal deve ser único.
             </li>
-            <li>Produções podem ser vazias.</li>
+            <li>Símbolo gramatical: Deve ser uma letra maiúscula (A-Z).</li>
+            <li>As produções devem ser inseridas uma por linha.</li>
+            <li>Símbolo terminal: Deve ser uma letra minúscula (a-z).</li>
+            <li>
+              Derivação à direita: A produção deve seguir a forma A → α, onde A
+              é um símbolo não terminal e α é uma sequência de símbolos
+              (terminais e/ou não terminais).
+            </li>
+            <li>
+              Produções vazias são permitidas, representando a transição para a
+              cadeia vazia (ε).
+            </li>
+            <li> Derivação é feita da esquerda para a direita.</li>
             <li>Exemplo de produção válida: S → aA</li>
-            <li>Exemplo de produção inválida: S → a1B (contém número)</li>
+            <li>Exemplo de produção válida: A → bB</li>
+            <li>Exemplo de produção válida: B → c</li>
+            <li>Exemplo de produção válida: A → (produção vazia)</li>
+            <li>
+              Exemplo de produção inválida: s → aA (símbolo não terminal em
+              minúscula)
+            </li>
+            <li>
+              Exemplo de produção inválida: A → 1B (símbolo terminal não é uma
+              letra)
+            </li>
+            <li>
+              Exemplo de produção inválida: A → aA1 (símbolo terminal contém
+              número)
+            </li>
+            <li>
+              Exemplo de produção inválida: A → aA | aA (produções duplicadas)
+            </li>
           </ul>
         </div>
       )}

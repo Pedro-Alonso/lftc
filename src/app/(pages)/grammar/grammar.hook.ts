@@ -15,25 +15,6 @@ export const useGrammar = (): IGrammarProps => {
     },
   ]);
 
-  const validateGrammarSymbol = (symbol: string) => {
-    return /^([A-Z]{0,1})$/.test(symbol);
-  };
-
-  const validateGrammarValue = (value: string) => {
-    return /^[a-zA-Z0-9 ]*$/.test(value);
-  };
-
-  const onValidateGrammar = useCallback(
-    (grammar: GrammarState): GrammarState => {
-      const isSymbolValid = validateGrammarSymbol(grammar.symbol);
-      const isValid =
-        validateGrammarValue(grammar.value) && grammar.symbol !== "";
-      // const value = grammar.symbol ? grammar.value || "ε" : grammar.value;
-      return { ...grammar, isSymbolValid, isValid };
-    },
-    []
-  );
-
   const onValidateText = useCallback(
     (text: string) => {
       const grammarMap: Record<string, string[]> = {};
@@ -50,7 +31,14 @@ export const useGrammar = (): IGrammarProps => {
           if (production.length === 0) {
             if (input.length === 0) return true;
           } else if (production.length === 1) {
-            if (input[0] === production[0] && input.length === 1) return true;
+            // Terminal unitário ou não-terminal unitário
+            if (production.match(/^[A-Z]$/)) {
+              // É um não-terminal unitário (e.g., 'B')
+              if (derive(production, input)) return true;
+            } else if (input[0] === production[0] && input.length === 1) {
+              // É um terminal unitário
+              return true;
+            }
           } else {
             const terminal = production[0];
             const nextSymbol = production.slice(1);
@@ -138,12 +126,41 @@ export const useGrammar = (): IGrammarProps => {
         },
       ]);
     }
-  }, [grammarStates, onValidateGrammar]);
+    // TODO: Corrigir infinit loop ao validar
+    // setGrammarStates((prev) => prev.map(onValidateGrammar));
+  }, [grammarStates]);
+
+  const onChangeGrammarStates = (
+    newStates: GrammarState[] | ((prev: GrammarState[]) => GrammarState[])
+  ) => {
+    const symbolRegex = /^([A-Z]{0,1})$/;
+    const valueRegex = /^([a-z]{0,1}[A-Z]{0,1})$/;
+    let updatedStates: GrammarState[];
+    if (typeof newStates === "function") {
+      updatedStates = newStates(grammarStates);
+    } else {
+      updatedStates = newStates;
+    }
+    updatedStates = updatedStates
+      .map((g) => {
+        const isSymbolValid = symbolRegex.test(g.symbol);
+        const isValid = valueRegex.test(g.value);
+        return {
+          id: g.id,
+          symbol: isSymbolValid ? g.symbol : "",
+          isSymbolValid,
+          value: isValid ? g.value : "",
+          isValid,
+        };
+      })
+      .filter((g): g is GrammarState => g !== undefined);
+    setGrammarStates(updatedStates);
+  };
 
   useEffect(() => {
     // setGrammarStates((prev) => prev.map(onValidateGrammar));
     setIsTextValid(onValidateText(text));
-  }, [text, onValidateText, onValidateGrammar]);
+  }, [text, onValidateText]);
 
   return {
     grammarStates,
@@ -152,7 +169,7 @@ export const useGrammar = (): IGrammarProps => {
     isRulesVisible,
     onDownloadGrammar,
     onUploadGrammar,
-    onChangeGrammarStates: setGrammarStates,
+    onChangeGrammarStates,
     onChangeText: setText,
     onChangeIsRulesVisible: setIsRulesVisible,
   };
