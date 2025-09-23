@@ -5,7 +5,7 @@ import { FileInput } from "@/components/file-input";
 import { Input, InputTypes } from "@/components/input";
 import { Link } from "@/components/link";
 import { Screen } from "@/components/screen";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IAutomatonPage, JsPlumbInstance } from "./automaton.types";
 
 export const AutomatonLayout = ({
@@ -29,6 +29,7 @@ export const AutomatonLayout = ({
 }: IAutomatonPage) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const jsPlumbInstanceRef = useRef<JsPlumbInstance | null>(null);
+  const [isRulesVisible, setIsRulesVisible] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined" && containerRef.current) {
@@ -388,6 +389,48 @@ export const AutomatonLayout = ({
         onClick={handleContainerClick}
         style={{ position: "relative" }}
       />
+
+      <Button
+        onClick={() => setIsRulesVisible((prev) => !prev)}
+        className="mt-4 !w-60 bg-blue-400 hover:bg-blue-600"
+        text={isRulesVisible ? "Esconder Regras" : "Mostrar Regras"}
+      />
+      
+      {isRulesVisible && (
+        <div className="mt-4 p-4 border-2 rounded-md bg-gray-100 w-full max-w-md">
+          <h3 className="font-bold mb-2">Regras para Autômatos Finitos:</h3>
+          <ul className="list-disc list-inside">
+            <li>
+              O simulador implementa apenas Autômatos Finitos Determinísticos (AFD).
+            </li>
+            <li>Cada estado deve ter um nome/rótulo único.</li>
+            <li>
+              Um AFD deve ter exatamente um estado inicial, marcado com uma seta de entrada.
+            </li>
+            <li>
+              Um AFD deve ter pelo menos um estado final, marcado com borda dupla.
+            </li>
+            <li>
+              Cada transição deve ter um único símbolo como rótulo (não são aceitos símbolos vazios ε).
+            </li>
+            <li>
+              Para cada estado e cada símbolo do alfabeto, deve haver exatamente uma transição (determinismo).
+            </li>
+            <li>
+              Para testar uma palavra, digite-a no campo &quot;Palavra para testar&quot; e clique em &quot;Testar Palavra&quot;.
+            </li>
+            <li>
+              O processamento da palavra começa no estado inicial e segue as transições correspondentes aos símbolos da palavra.
+            </li>
+            <li>
+              A palavra é aceita se, após ler todos os símbolos, o autômato estiver em um estado final.
+            </li>
+            <li>
+              A palavra é rejeitada se não houver transição para algum símbolo ou se terminar em um estado não-final.
+            </li>
+          </ul>
+        </div>
+      )}
 
       <style jsx global>{`
         .state {
