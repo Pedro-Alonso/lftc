@@ -53,8 +53,14 @@ export const useGrammar = (): IGrammarProps => {
             // Epsilon
             if (input.length === 0) return true;
           } else if (production.length === 1) {
-            // Terminal unitário
-            if (input[0] === production[0] && input.length === 1) return true;
+            // Terminal unitário ou não-terminal unitário
+            if (production.match(/^[A-Z]$/)) {
+              // É um não-terminal unitário (e.g., 'B')
+              if (derive(production, input)) return true;
+            } else if (input[0] === production[0] && input.length === 1) {
+              // É um terminal unitário
+              return true;
+            }
           } else {
             // Produção com mais de um símbolo
             const terminal = production[0];
