@@ -18,3 +18,7 @@ body {
   color: var(--foreground);
   font-family: "Montserrat";
 }
+
+.state .state-output {
+  pointer-events: none;
+}

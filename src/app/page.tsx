@@ -13,6 +13,7 @@ export default function Home() {
         <Link href="/regex" text="Simulador de Regex" />
         <Link href="/grammar" text="Simulador de Gramática" />
         <Link href="/automaton" text="Simulador de Autômatos Finitos" />
+        <Link href="/moore" text="Simulador de Máquina de Moore" />
       </div>
     </Screen>
   );
